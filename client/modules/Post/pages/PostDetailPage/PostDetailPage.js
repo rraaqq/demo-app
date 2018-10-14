@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { getShowEditPost } from '../../../App/AppReducer';
-import { fetchPost, editPostRequest } from '../../PostActions';
+import { fetchPost, editPostRequest, thumbUp, editThumbUp, thumbDown, editThumbDown } from '../../PostActions';
 import { toggleEditPost } from '../../../App/AppActions';
 
 // Import Style
@@ -20,6 +20,7 @@ export class PostDetailPage extends React.Component {
       name: this.props.post.name,
       title: this.props.post.title,
       content: this.props.post.content,
+      voteCount: this.props.post.voteCount,
     };
   }
   handleInputChange = (event) => {
@@ -32,6 +33,12 @@ export class PostDetailPage extends React.Component {
     this.props.toggleEditPost();
     this.props.editPostRequest(this.state);
   };
+  handleThumbUp = () => {
+    this.props.editThumbUp(this.state);
+  }
+  handleThumbDown = () => {
+    this.props.editThumbDown(this.state);
+  }
   renderPostForm = () => {
     return (
       <div className={styles['form-content']}>
@@ -49,6 +56,9 @@ export class PostDetailPage extends React.Component {
         <h3 className={styles['post-title']}>{this.props.post.title}</h3>
         <p className={styles['author-name']}><FormattedMessage id="by" /> {this.props.post.name}</p>
         <p className={styles['post-desc']}>{this.props.post.content}</p>
+        <span>Votes: {this.props.post.voteCount}</span>
+        <button onClick={this.handleThumbUp}>UP</button>
+        <button onClick={this.handleThumbDown}>DOWN</button>
       </div>
     );
   };
@@ -71,6 +81,10 @@ function mapDispatchToProps(dispatch, props) {
   return {
     toggleEditPost: () => dispatch(toggleEditPost()),
     editPostRequest: (post) => dispatch(editPostRequest(props.params.cuid, post)),
+    thumbUp: () => dispatch(thumbUp(props.params.cuid)),
+    editThumbUp: (post) => dispatch(editThumbUp(props.params.cuid, post)),
+    thumbDown: () => dispatch(thumbDown(props.params.cuid)),
+    editThumbDown: (post) => dispatch(editThumbDown(props.params.cuid, post)),
   };
 }
 
@@ -92,6 +106,7 @@ PostDetailPage.propTypes = {
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
+    voteCount: PropTypes.number.isRequired,
     slug: PropTypes.string.isRequired,
     cuid: PropTypes.string.isRequired,
   }).isRequired,
@@ -105,6 +120,9 @@ PostDetailPage.propTypes = {
   showEditPost: PropTypes.bool.isRequired,
   toggleEditPost: PropTypes.func.isRequired,
   editPostRequest: PropTypes.func.isRequired,
+  thumbUp: PropTypes.func.isRequired,
+  editThumbUp: PropTypes.func.isRequired,
+  editThumbDown: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PostDetailPage));
