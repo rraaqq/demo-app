@@ -95,34 +95,28 @@ export function editPost(req, res) {
   });
 }
 
-/**
- * Thumb up
- * @param req
- * @param res
- * @returns void
- */
-
 export function thumbUp(req, res) {
-  Post.update({ cuid: req.params.cuid }, { voteCount: req.body.post.voteCount }).exec((err, voteCount) => {
-    if (err) {
-      res.status(500).send(err);
+  Post.findOneAndUpdate(
+    { cuid: req.params.cuid },
+    { $inc: { voteCount: 1 } },
+    err => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).end();
     }
-    res.json({ voteCount });
-  });
+  );
 }
 
-/**
- * Thumb down
- * @param req
- * @param res
- * @returns void
- */
-
 export function thumbDown(req, res) {
-  Post.update({ cuid: req.params.cuid }, { voteCount: req.body.post.voteCount }).exec((err, voteCount) => {
-    if (err) {
-      res.status(500).send(err);
+  Post.findOneAndUpdate(
+    { cuid: req.params.cuid },
+    { $inc: { voteCount: -1 } },
+    err => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).end();
     }
-    res.json({ voteCount });
-  });
+  );
 }
