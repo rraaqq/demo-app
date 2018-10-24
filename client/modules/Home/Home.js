@@ -1,30 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React from 'react';
 
 // Import Style
-import styles from './Home.css';
+// import styles from './Home.css';
 
-class Home extends Component {
-  render() {
-    return (
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {};
+const Home = () => {
+  return (
+    <div>
+      <h2>Hello world!</h2>
+    </div>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-Home.propTypes = {
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home;
